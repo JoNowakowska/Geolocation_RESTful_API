@@ -1,5 +1,5 @@
 """
-This module contains classes which are called with different routes.
+This module contains class which is called with the /geolocation endpoint.
 """
 
 from flask_restx import Resource
@@ -11,15 +11,10 @@ from models.geolocation import Geolocations
 
 
 class Geolocation(Resource):
-    """
-    Take care of
-    """
+    """This class is called with /geolocation endpoint."""
 
     def get(self):
-        """
-        Detect client's location based on its IP and saves it to database.
-        :return:
-        """
+        """Detect client's location based on its IP and save it to the 'geolocations' table."""
 
         if request.headers.getlist("X-Forwarded-For"):
             client_ip = request.headers.getlist("X-Forwarded-For")[0]
@@ -31,10 +26,7 @@ class Geolocation(Resource):
         return self.save_to_db(location_info)
 
     def post(self):
-        """
-        Detect a location based on IP provided by client in a body as JSON and save it to database.
-        :return:
-        """
+        """Detect location based on IP provided by client as JSON in a body and save to the 'geolocations' table."""
 
         id_of_interest = request.get_json()['ip_address']  # bulk searches not available in the free plan
         location_info = get_location_data(id_of_interest)
@@ -42,11 +34,14 @@ class Geolocation(Resource):
         return self.save_to_db(location_info)
 
     def save_to_db(self, location_info):
-        """
-        Instantiate a Geolocation object and save it to db.
-        :param location_info: dict
-        :return: JSON
-        """
+        """Instantiate a Geolocation object with location_info as params and save it to db."""
+
+        geolocation_check = Geolocations.find_by_ip(location_info.get('ip'))
+        if geolocation_check:
+            return {
+                "message": "IP already exists in db.",
+                "IP data": geolocation_check
+            }
 
         new_geolocation = Geolocations(
             ip=location_info.get('ip'),
@@ -67,8 +62,15 @@ class Geolocation(Resource):
 
         try:
             db.session.commit()
+            return {
+                "message": "Successfully saved to db",
+                "IP data": new_geolocation.json()
+            }
         except:
             db.session.rollback()
-            raise
+            return {
+                "message": "Something went wrong! Saving to db failed!",
+                "IP data": new_geolocation.json()
+            }
         finally:
             db.session.close()

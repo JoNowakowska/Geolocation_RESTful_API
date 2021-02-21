@@ -9,13 +9,14 @@ from flask_restx import Api
 
 from db import db
 from resources.geolocation import Geolocation
-
+from resources.geolocation_ip import GeolocationIP
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 
 api = Api(app)
 api.add_resource(Geolocation, '/geolocation')
+api.add_resource(GeolocationIP, '/geolocation/<string:ip>')
 
 
 @app.before_first_request
