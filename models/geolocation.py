@@ -1,5 +1,5 @@
 """
-This module creates database model for geolocation.
+This module creates database model for geolocations table.
 """
 
 

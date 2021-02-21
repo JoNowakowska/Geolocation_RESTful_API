@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "fba4daf6-0fae-4561-8a73-d0fa7bbc337a",
+		"name": "Geolocation_RESTful_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Karolina\",\r\n    \"password\": \"123\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Karolina\",\r\n    \"password\": \"123\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/geolocation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/geolocation",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"geolocation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/geolocation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ip_address\": \"134.201.250.155\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/geolocation",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"geolocation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/geolocation/<string:ip>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/geolocation/127.0.0.1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"geolocation",
+						"127.0.0.1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/geolocation/<string:ip>",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/geolocation/127.0.0.1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"geolocation",
+						"127.0.0.1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
