@@ -1,7 +1,7 @@
 """
 This module creates database model for geolocations table.
 """
-
+from flask import jsonify
 
 from db import db
 
@@ -20,11 +20,12 @@ class Geolocations(db.Model):
     region_name = db.Column(db.String(150))
     city = db.Column(db.String(150))
     zip = db.Column(db.String(50))
-    latitude = db.Column(db.Numeric())
-    longitude = db.Column(db.Numeric())
+    latitude = db.Column(db.String())
+    longitude = db.Column(db.String())
 
     def json(self):
         """Return self as dictionary."""
+
         return {
             "id": self.id,
             "ip": self.ip,

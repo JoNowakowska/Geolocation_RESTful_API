@@ -30,16 +30,10 @@ class Geolocation(Resource):
     def post(self):
         """Detect location based on IP provided by client as JSON in a body and save to the 'geolocations' table."""
 
-        data_parser = reqparse.RequestParser()
-        data_parser.add_argument("ip_address",
-                                 required=True,
-                                 type=str,
-                                 help="Please provide an ip_address.")
-
-        id_of_interest = data_parser.parse_args().get("ip_address")  # bulk searches not available in the free plan
-
+        id_of_interest = request.get_json("ip_address").get("ip_address")  # bulk searches not available in the free plan
         location_info = get_location_data(id_of_interest)
         print("success! {}".format(id_of_interest))
+
         return self.save_to_db(location_info)
 
     def save_to_db(self, location_info):
@@ -68,6 +62,7 @@ class Geolocation(Resource):
         )
 
         new_geolocation.add_to_session()
+        print("Added successfully!")
 
         try:
             db.session.commit()
