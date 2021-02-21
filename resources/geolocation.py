@@ -2,7 +2,7 @@
 This module contains class which is called with the /geolocation endpoint.
 """
 from flask_jwt_extended import jwt_required
-from flask_restx import Resource, reqparse
+from flask_restx import Resource
 from flask import request
 
 from db import db
@@ -32,7 +32,6 @@ class Geolocation(Resource):
 
         id_of_interest = request.get_json("ip_address").get("ip_address")  # bulk searches not available in the free plan
         location_info = get_location_data(id_of_interest)
-        print("success! {}".format(id_of_interest))
 
         return self.save_to_db(location_info)
 

@@ -1,7 +1,7 @@
 """
 This module creates database model for geolocations table.
 """
-from flask import jsonify
+
 
 from db import db
 
