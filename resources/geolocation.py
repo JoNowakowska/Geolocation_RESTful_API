@@ -1,6 +1,7 @@
 """
 This module contains class which is called with the /geolocation endpoint.
 """
+
 from flask_jwt_extended import jwt_required
 from flask_restx import Resource
 from flask import request

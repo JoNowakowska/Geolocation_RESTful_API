@@ -57,7 +57,6 @@ class Login(Resource):
 
         if user_login and safe_str_cmp(user.get("password"), user_login.password):
             access_token = create_access_token(identity=user_login.id, fresh=True)
-            print("access_token {}".format(access_token))
             return {"access_token": access_token}, 200
         else:
             return {"message": "Invalid credentials."}, 401
