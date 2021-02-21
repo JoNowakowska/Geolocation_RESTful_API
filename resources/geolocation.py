@@ -61,7 +61,6 @@ class Geolocation(Resource):
         )
 
         new_geolocation.add_to_session()
-        print("Added successfully!")
 
         try:
             db.session.commit()
@@ -71,9 +70,10 @@ class Geolocation(Resource):
             }, 201
         except:
             db.session.rollback()
-            return {
-                "message": "Something went wrong! Saving to db failed!",
-                "IP data": new_geolocation.json()
-            }, 500
+            raise
+            #return {
+            #    "message": "Something went wrong! Saving to db failed!",
+            #    "IP data": new_geolocation.json()
+            #}, 500
         finally:
             db.session.close()
