@@ -22,5 +22,7 @@ def get_location_data(ip):
     response = requests.get(full_url)
     location_data = response.json()
 
+    print("IP: {}, full_url: {}, location_data: {}".format(ip, full_url, location_data))
+
     return location_data
 
