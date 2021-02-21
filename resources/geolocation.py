@@ -70,10 +70,9 @@ class Geolocation(Resource):
             }, 201
         except:
             db.session.rollback()
-            raise
-            #return {
-            #    "message": "Something went wrong! Saving to db failed!",
-            #    "IP data": new_geolocation.json()
-            #}, 500
+            return {
+                "message": "Something went wrong! Saving to db failed!",
+                "IP data": new_geolocation.json()
+            }, 500
         finally:
             db.session.close()
