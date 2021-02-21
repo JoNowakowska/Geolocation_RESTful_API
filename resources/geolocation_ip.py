@@ -3,10 +3,8 @@ This module contains class which is called with the /geolocation/<int:ip> endpoi
 """
 
 from flask_restx import Resource
-from flask import request
 
 from db import db
-from external_api import get_location_data
 from models.geolocation import Geolocations
 
 
@@ -18,5 +16,26 @@ class GeolocationIP(Resource):
 
         geo_from_db = Geolocations.find_by_ip(ip)
         return {
-            'IP: {}'. format(ip): "{}".format(geo_from_db)
+            'IP: {}'. format(ip): "{}".format(geo_from_db.json())
         }
+
+    def delete(self, ip):
+        """Delete a record from 'geolocations' table where ip=ip"""
+
+        record = Geolocations.find_by_ip(ip)
+
+        if not record:
+            return {"message": "Item with the ip {} not found in the db.".format(ip)}
+
+
+        try:
+            record.delete_from_db()
+            db.session.commit()
+            return {"message": "Item with the ip {} deleted successfully!.".format(ip)}
+        except:
+            db.session.rollback()
+            return {
+                "message": "Something went wrong! Deleting from the db failed!"
+            }
+        finally:
+            db.session.close()

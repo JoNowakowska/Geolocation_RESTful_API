@@ -46,8 +46,18 @@ class Geolocations(db.Model):
 
         db.session.add(self)
 
+    def delete_from_db(self):
+        """Delete the record from db"""
+
+        db.session.delete(self)
+
+
     @classmethod
     def find_by_ip(cls, ip):
         """Find a record by its ip and return as dictionary"""
+
         found_ip = cls.query.filter_by(ip=ip).first()
-        return found_ip.json()
+        return found_ip
+
+
+

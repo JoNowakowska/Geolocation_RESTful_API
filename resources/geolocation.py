@@ -40,7 +40,7 @@ class Geolocation(Resource):
         if geolocation_check:
             return {
                 "message": "IP already exists in db.",
-                "IP data": geolocation_check
+                "IP data": geolocation_check.json()
             }
 
         new_geolocation = Geolocations(
