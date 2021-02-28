@@ -2,7 +2,6 @@
 This module creates database model for geolocations table.
 """
 
-
 from db import db
 
 
@@ -10,7 +9,8 @@ class Geolocations(db.Model):
     __tablename__ = 'geolocations'
 
     id = db.Column(db.Integer(), primary_key=True)
-    ip = db.Column(db.String(), unique=True, nullable=False)
+    ip = db.Column(db.String(), nullable=False)
+    url = db.Column(db.String())
     ipv_type = db.Column(db.String(10))
     continent_code = db.Column(db.String(10))
     continent_name = db.Column(db.String(60))
@@ -23,12 +23,17 @@ class Geolocations(db.Model):
     latitude = db.Column(db.String())
     longitude = db.Column(db.String())
 
+    __table_args__ = (
+        db.UniqueConstraint('ip', 'url'),
+    )
+
     def json(self):
         """Return self as dictionary."""
 
         return {
             "id": self.id,
             "ip": self.ip,
+            "url": self.url,
             "ipv_type": self.ipv_type,
             "continent_code": self.continent_code,
             "continent_name": self.continent_name,
@@ -52,13 +57,26 @@ class Geolocations(db.Model):
 
         db.session.delete(self)
 
-
     @classmethod
     def find_by_ip(cls, ip):
         """Find a record by its ip and return as dictionary"""
 
         found_ip = cls.query.filter_by(ip=ip).first()
         return found_ip
+
+    @classmethod
+    def find_by_url(cls, url):
+        """Find a record by its ip and return as dictionary"""
+
+        found_url = cls.query.filter_by(url=url).first()
+        return found_url
+
+    @classmethod
+    def find_by_ip_url(cls, ip, url):
+        """Find a record by its ip and return as dictionary"""
+
+        found_url = cls.query.filter_by(ip=ip, url=url).first()
+        return found_url
 
 
 

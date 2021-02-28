@@ -96,7 +96,7 @@
 			"response": []
 		},
 		{
-			"name": "/geolocation",
+			"name": "/geolocation (url in body)",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -113,7 +113,39 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"ip_address\": \"134.201.250.155\"\r\n}"
+					"raw": "{\r\n    \"url\": \"google.com\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/geolocation",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"geolocation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/geolocation (ip in body)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ip\": \"134.201.250.155\"\r\n}"
 				},
 				"url": {
 					"raw": "{{url}}/geolocation",
