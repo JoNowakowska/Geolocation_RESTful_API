@@ -28,7 +28,8 @@
 					"path": [
 						"register"
 					]
-				}
+				},
+				"description": "Register by providing 'username' and 'password'. Then you need to log in. All the endpoints require jwt token."
 			},
 			"response": []
 		},
@@ -68,7 +69,8 @@
 					"path": [
 						"login"
 					]
-				}
+				},
+				"description": "Log in by providing your 'username' and 'password' (remember to /register prior to this step). "
 			},
 			"response": []
 		},
@@ -91,7 +93,8 @@
 					"path": [
 						"geolocation"
 					]
-				}
+				},
+				"description": "This method shows all the records (and their details) saved to db. Jwt token required."
 			},
 			"response": []
 		},
@@ -123,7 +126,8 @@
 					"path": [
 						"geolocation"
 					]
-				}
+				},
+				"description": "Learn the geolocation info (and automatically save them to db if not exist) by providing a url of interest into the JSON body\". JWT required."
 			},
 			"response": []
 		},
@@ -155,9 +159,115 @@
 					"path": [
 						"geolocation"
 					]
-				}
+				},
+				"description": "Learn the geolocation info (and automatically save them to db if not exist) by providing an ip of interest into the JSON body. JWT required."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "/geolocation (ip in body)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ip\": \"216.58.212.165\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/geolocation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"geolocation"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "/geolocation",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ip\": \"134.201.250.155\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/geolocation",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"geolocation"
+					]
+				},
+				"description": "Deletes a record from a db based on its ip and/or url provided by client in a body.\nYou can provide either ip or url, or both - ip and url.\nJWT required."
+			},
+			"response": [
+				{
+					"name": "/geolocation (url in body)",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"google.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/geolocation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"geolocation"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
 		},
 		{
 			"name": "/geolocation/<string:ip>",
@@ -171,15 +281,16 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/geolocation/134.201.250.155",
+					"raw": "{{url}}/geolocation/216.58.212.165",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"geolocation",
-						"134.201.250.155"
+						"216.58.212.165"
 					]
-				}
+				},
+				"description": "Returns a record from the db based on its ip passed as parameter to url. JWT required."
 			},
 			"response": []
 		},
@@ -195,15 +306,40 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/geolocation/127.0.0.1",
+					"raw": "{{url}}/geolocation/216.58.212.165",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"geolocation",
-						"127.0.0.1"
+						"216.58.212.165"
 					]
-				}
+				},
+				"description": "Deletes a record from the db based on its ip passed as parameter to url. JWT required."
+			},
+			"response": []
+		},
+		{
+			"name": "/client_geolocation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/client_geolocation",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"client_geolocation"
+					]
+				},
+				"description": "Returns geologation data based on a client's ip. JWT required."
 			},
 			"response": []
 		}
