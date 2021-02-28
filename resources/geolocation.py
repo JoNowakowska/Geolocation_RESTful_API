@@ -17,19 +17,14 @@ class Geolocation(Resource):
 
     @jwt_required()
     def get(self):
-        """Detect client's location based on its IP and save it to the 'geolocations' table."""
+        """Return json of all of the records saved in the db"""
 
-        if request.headers.getlist("X-Forwarded-For"):
-            client_ip = request.headers.getlist("X-Forwarded-For")[0]
-        else:
-            client_ip = request.remote_addr
+        all_recs = Geolocations.get_all()
+        all_recs_details = [r.json() for r in all_recs]
 
-        try:
-            location_info = get_location_data(client_ip)
-        except Exception as e:
-            return self.external_API_error(e)
-
-        return self.save_to_db(location_info)
+        return {
+            "All records saved to db": all_recs_details
+        }
 
     @jwt_required()
     def post(self):
@@ -40,6 +35,7 @@ class Geolocation(Resource):
 
         self.url_of_interest = request.get_json("url").get("url")
         self.ip_of_interest = request.get_json("ip").get("ip")
+
         if self.url_of_interest and self.ip_of_interest:
             return {
                     "message": "Bad request",
@@ -47,6 +43,8 @@ class Geolocation(Resource):
                    }, 400
         elif self.url_of_interest:
             self.ip_of_interest = socket.gethostbyname(self.url_of_interest)
+        elif self.ip_of_interest:
+            pass
         else:
             return {
                     "message": "Bad request",
@@ -59,6 +57,31 @@ class Geolocation(Resource):
             return self.external_API_error(e)
 
         return self.save_to_db(location_info)
+
+    @jwt_required()
+    def delete(self):
+        """Delete a record from 'geolocations' table where ip=ip and url=url"""
+
+        url = request.get_json("url").get("url")
+        ip = request.get_json("ip").get("ip")
+
+        if url and ip is None:
+            ip = socket.gethostbyname(url)
+
+        record = Geolocations.find_by_ip_url(ip, url)
+
+        if not record:
+            return {"message": "Item with the ip={} and url={} not found in the db.".format(ip, url)}, 404
+
+        try:
+            record.delete_from_db()
+            db.session.commit()
+            return {"message": "Item with the ip={} and url={} deleted successfully!.".format(ip, url)}, 200
+        except:
+            db.session.rollback()
+            return {"message": "Something went wrong! Deleting from the db failed!"}, 500
+        finally:
+            db.session.close()
 
     def save_to_db(self, location_info):
         """Instantiate a Geolocation object with location_info as params and save it to db."""
@@ -105,6 +128,6 @@ class Geolocation(Resource):
 
     def external_API_error(self, e):
         return {
-                   "message": "Sorry, there was a problem with external API. Details: {}".format(e),
-                   "IP data": "Null"
+            "message": "Sorry, there was a problem with external API. Details: {}".format(e),
+            "IP data": "Null"
                 }, 500

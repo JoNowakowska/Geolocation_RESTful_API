@@ -31,29 +31,11 @@ class TestRecipeResource(BaseTest):
                                       headers={"Authorization": f"Bearer {self.access_token}"}
                                       )
 
-        expected = {"message": "Successfully saved to db",
-                    "IP data": {
-                        "id": 1,
-                        "ip": "127.0.0.1",
-                        "ipv_type": None,
-                        "continent_code": None,
-                        "continent_name": None,
-                        "country_code": None,
-                        "country_name": None,
-                        "region_code": None,
-                        "region_name": None,
-                        "city": None,
-                        "zip": None,
-                        "latitude": None,
-                        "longitude": None
-                        }
-                    }
-
-        self.maxDiff = None
+        expected = {"All records saved to db": []}
 
         self.assertDictEqual(json.loads(response.data), expected,
                              "Message returned after successfully saving client's ip is incorrect.")
-        self.assertEqual(response.status_code, 201,
+        self.assertEqual(response.status_code, 200,
                          "Status code returned after successfully saving client's ip is incorrect.")
 
     def test_get_location_already_exists(self):

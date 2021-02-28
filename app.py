@@ -9,6 +9,7 @@ from flask_jwt_extended import JWTManager
 from flask_restx import Api
 
 from db import db
+from resources.client_geolocation import ClientGeolocation
 from resources.geolocation import Geolocation
 from resources.geolocation_ip import GeolocationIP
 from resources.user import Register, Login
@@ -21,6 +22,7 @@ api = Api(app)
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 api.add_resource(Geolocation, '/geolocation')
+api.add_resource(ClientGeolocation, '/client_geolocation')
 api.add_resource(GeolocationIP, '/geolocation/<string:ip>')
 
 jwt = JWTManager(app)

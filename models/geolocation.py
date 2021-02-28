@@ -59,24 +59,28 @@ class Geolocations(db.Model):
 
     @classmethod
     def find_by_ip(cls, ip):
-        """Find a record by its ip and return as dictionary"""
+        """Find a record by its ip and return the object"""
 
         found_ip = cls.query.filter_by(ip=ip).first()
         return found_ip
 
     @classmethod
     def find_by_url(cls, url):
-        """Find a record by its ip and return as dictionary"""
+        """Find a record by its url and return the object"""
 
         found_url = cls.query.filter_by(url=url).first()
         return found_url
 
     @classmethod
     def find_by_ip_url(cls, ip, url):
-        """Find a record by its ip and return as dictionary"""
+        """Find a record by its ip and url and return the object"""
 
-        found_url = cls.query.filter_by(ip=ip, url=url).first()
-        return found_url
+        found_record = cls.query.filter_by(ip=ip, url=url).first()
+        return found_record
 
+    @classmethod
+    def get_all(cls):
+        all_recs = cls.query.all()
+        return all_recs
 
 

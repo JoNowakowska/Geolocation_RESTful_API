@@ -30,7 +30,6 @@ class GeolocationIP(Resource):
         if not record:
             return {"message": "Item with the ip {} not found in the db.".format(ip)}, 404
 
-
         try:
             record.delete_from_db()
             db.session.commit()
