@@ -2,7 +2,8 @@
 
 ## Summary
 This simple RESTful API connects to ipstack API (https://ipstack.com/) allowing users to 
-learn geolocation data based on IPs and save them to the Postgres db. 
+learn geolocation data based on IP or URL and save them to the Postgres db. Prior that, a user needs to 
+register and log in, because every endpoint requires JWT token.
 
 
 ## Running the app
@@ -27,10 +28,14 @@ The API has the following endpoints:
   
 /login (POST)
     
-/geolocation (GET, POST)  
+/geolocation (GET, POST, DELETE)  
   
 /geolocation/<string:ip> (GET, DEL)
 
+/client_geolocation (GET)
+
+You can learn more about the endpoints e.g. in the postman collection documentation Geolocation_RESTful_API.postman_collection.json.
+
 
 ## API collection
-A Postman collection is saved in a file BGeolocation_RESTful_API.postman_collection.json. Feel free to download it to check the API endpoints easily.
+As mentioned above, the Postman collection is saved in the file Geolocation_RESTful_API.postman_collection.json. Feel free to download it to check the API endpoints easily.
