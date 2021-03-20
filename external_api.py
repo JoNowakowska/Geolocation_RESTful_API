@@ -7,7 +7,7 @@ The location is detected based on IP or URL pasted to the request body as JSON.
 
 import requests
 
-from geolocation_API_key import API_KEY
+from geolocation_api_key import API_KEY
 
 
 GEO_API_URL = "http://api.ipstack.com/"  # https is only for paid subscription plan
